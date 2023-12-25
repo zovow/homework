@@ -1,0 +1,57 @@
+2.	create database zw;
+	create user 'zw'@'localhost' IDENTIFIED BY 'zw17870014253';
+	GRANT ALL PRIVILEGES ON *_* TO 'zw'@'localhost';
+	
+3. 	CREATE TABLE user (
+    	id INT AUTO_INCREMENT PRIMARY KEY,
+    	name VARCHAR(255),
+    	sex VARCHAR(10),
+    	age INT
+	);
+
+mysql->	insert into user(id,name,sex,age,phone) values
+     ->  ('1','张三','男',25,'1234567890'),
+     ->  ('2','李四','女',30,'9876543210'),
+     ->  ('3','王五','男',22,'1357924680'),
+     ->  ('4','赵六','女',28,'2468013579'),
+     ->  ('5','钱七','男',35,'1122334455');
+	
+
+4.	SELECT id, name, sex, age, phone FROM user WHERE age BETWEEN 20 AND 30;
+
+
+5. 	DELETE FROM user WHERE name LIKE '%张%';
+
+
+6.	SELECT AVG(age) AS average_age FROM user;
+
+
+7.	SELECT * FROM user WHERE name LIKE '%张%' ORDER BY age DESC;
+
+
+8.	CREATE TABLE team (
+    		id INT AUTO_INCREMENT PRIMARY KEY,
+    		teamName VARCHAR(255)
+	);
+	
+	CREATE TABLE score (
+    		id INT AUTO_INCREMENT PRIMARY KEY,
+    		teamid INT,
+    		userid INT,
+    		score INT,
+    		FOREIGN KEY (teamid) REFERENCES team(id),
+    		FOREIGN KEY (userid) REFERENCES user(id)
+	);
+
+
+9.	SELECT u.*
+	FROM user u
+	JOIN score s ON u.id = s.userid
+	JOIN team t ON s.teamid = t.id
+	WHERE t.teamName = 'ECNU' AND u.age < 20;
+
+10.	SELECT t.teamName, IFNULL(SUM(s.score), 0) AS totalScore
+	FROM team t
+	LEFT JOIN score s ON t.id = s.teamid
+	WHERE t.teamName = 'ECNU'
+	GROUP BY t.teamName;
